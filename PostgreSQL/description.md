@@ -1,3 +1,76 @@
+brew install postgresql
+
+brew services start postgresql
+
+psql postgres
+
+CREATE DATABASE my_database;
+
+я выбрал PostgreSQL  - и написал это: gold@MacBook-Pro-Gold ~ % psql postgres
+psql (14.13 (Homebrew))
+Type "help" for help.
+postgres=# CREATE DATABASE my_database;
+CREATE DATABASE
+postgres=#   что делать дальше?
+
+\c my_database
+
+CREATE TABLE Students (
+  student_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  birthdate DATE,
+  course_id INT
+);
+
+CREATE TABLE Courses (
+  course_id SERIAL PRIMARY KEY,
+  course_name VARCHAR(100)
+);
+
+CREATE TABLE Instructors (
+  instructor_id SERIAL PRIMARY KEY,
+  instructor_name VARCHAR(100),
+  course_id INT REFERENCES Courses(course_id)
+);
+
+INSERT INTO Courses (course_name)
+VALUES 
+('Mathematics'),
+('Physics'),
+('Computer Science');
+
+INSERT INTO Students (first_name, last_name, birthdate, course_id)
+VALUES 
+('John', 'Doe', '2000-05-21', 1),
+('Jane', 'Smith', '1999-03-15', 2),
+('Mike', 'Brown', '2001-07-09', 3);
+
+INSERT INTO Instructors (instructor_name, course_id)
+VALUES 
+('Dr. John Williams', 1),
+('Dr. Lisa Thompson', 2),
+('Dr. Emily Davis', 3);
+
+SELECT s.first_name, s.last_name, c.course_name
+FROM Students s
+JOIN Courses c ON s.course_id = c.course_id;
+
+SELECT c.course_name, i.instructor_name
+FROM Courses c
+JOIN Instructors i ON c.course_id = i.course_id;
+
+SELECT s.first_name, s.last_name
+FROM Students s
+JOIN Courses c ON s.course_id = c.course_id
+WHERE c.course_name = 'Computer Science';
+
+
+
+------------------------------------------------------------------------------------
+
+
+
 1. PostgreSQL
 Для PostgreSQL вам нужно установить саму СУБД и выбрать среду для написания SQL-запросов:
 
